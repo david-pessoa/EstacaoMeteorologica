@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from django.views import View
+from .models import Agora, Hoje, Horario, ProximosDias
 
-# Create your views here.
+class IndexView(View):
+    pass
