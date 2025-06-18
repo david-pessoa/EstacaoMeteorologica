@@ -1,0 +1,47 @@
+{% load static %}
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estação Meteorológica</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark mt-2 py-3">
+        <div class="container-fluid position-relative">
+            <!-- Menu à esquerda -->
+            <div class="d-flex align-items-center">
+                <img src="{% static 'img/bars-solid.svg' %}" alt="menu" height="40px" width="40px" class="me-2">
+                <h4 class="mb-0 text-white">Menu</h4>
+            </div>
+
+            <!-- Título centralizado -->
+            <h1 class="position-absolute top-50 start-50 translate-middle text-white mb-0">
+                Dashboard Meteorológico
+            </h1>
+        </div>
+    </nav>
+    <div>
+        <div>
+            <div>
+                <img src="" alt=""> <!--Localização-->
+                <span></span> <!--Linha verde-->
+            </div>
+            <div>
+                <h4>{{ lugar }}</h4>
+                <span>Última atualização: Hoje {{ ag.hora_coleta }}</span>
+            </div>
+        </div>
+        <div class="form-check form-switch">
+            <span>Claro</span>
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <span>Escuro</span>
+        </div>
+    </div>
+</body>
+</html>
