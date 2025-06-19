@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="d-flex align-items-center justify-content-center bg-dark border-radius ms-auto me-5">
-            <table class="table table-dark mx-4" style="width: 35vw; height: 35vh;">
+            <table class="table table-dark mx-4" style="width: 35vw;">
                 <tbody class="table-top-font-size">
                     <tr class="text-center" style="vertical-align: middle;">
                         <td class="text-start inter-bold table-font-size">VENTO</td>
@@ -85,8 +85,8 @@
             </table>
         </div>
     </div>
-    <div class="d-flex align-items-center my-5">
-        <div class="bg-dark border-radius ps-4 pt-3 ms-5" style="width: 40vw; height: 29.87rem;">
+    <div class="d-flex align-items-top my-5">
+        <div class="bg-dark border-radius ps-4 pt-3 ms-5" style="width: 40vw;">
             <h4 class="inter">TEMPERATURA HOJE</h4>
             <div style="width: 95%; height: 70%;">
                 <canvas id="graficoTemperatura" style="width: 100%; height: 100%;"></canvas>
@@ -96,7 +96,7 @@
                 <h5 class="text-end inter">Mínima: {{ previsao_hoje.day.mintemp_c|floatformat:0 }}ºC</h5>
             </div>
         </div>
-        <div class="align-items-center justify-content-center bg-dark border-radius ps-4 pt-3 ms-auto me-5" style="width: 50vw; height: 29.87rem;">
+        <div class="align-items-center justify-content-center bg-dark border-radius ps-4 pt-3 ms-auto me-5" style="width: 50vw;">
             <h4 class="inter">PRÓXIMOS DIAS</h4>
             <table class="table table-dark">
                 <tbody class="table-bottom-font-size">
