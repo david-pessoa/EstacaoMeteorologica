@@ -29,7 +29,17 @@ body{
 
 .table-division
 {
-  border-bottom: #FFF solid 0.1rem;
+  border-bottom: 2px solid #FFF; 
+  width: 50%;;
+}
+
+tr{
+  line-height: 250%;
+}
+
+.border-radius
+{
+  border-radius: 20px;
 }
 
 

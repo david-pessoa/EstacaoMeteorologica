@@ -1,24 +1,26 @@
 from django.shortcuts import render
 from django.views import View
 import requests
-from datetime import datetime, time
 from decouple import config
 
 class IndexView(View):
     def get(self, request):
+        
+        #########################  REQUISIÇÃO DA API DO WEATHERAPI ####################
         API_KEY = config('API_KEY')
-        local = 'Sao Paulo'
+        local =  request.GET.get('local', 'Sao Paulo')
         dias = 6
         URL = f'http://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={local}&days={dias}&aqi=no&alerts=yes'
         response = requests.get(URL)
         dados = response.json()
 
         agora = dados['current'] #Tempo agora
-        proximos_dias = dados['forecast']['forecastday']
+        previsao = dados['forecast']['forecastday'] #Previsão do tempo para hoje e próximos dias
 
-        ultima_atualizacao = agora['last_updated'].split(' ')[-1]
-        umidade = agora['humidity']
+        ultima_atualizacao = agora['last_updated'].split(' ')[-1] #Obtém horário da última atualização
+        umidade = agora['humidity'] #Obtém humidade atual
 
+        # Classifica umidade como Alta, Moderad, Baixa ou Muito Baixa
         if umidade >= 60:
             tipo_umidade = 'Alta'
 
@@ -33,54 +35,70 @@ class IndexView(View):
         
         angulo_vento = agora['wind_degree'] - 45 # Faz correção (a imagem do ícone já é inclinada 45º)
 
-        hora_atual = datetime.now().strftime('%H:%M')
-        if hora_atual > '6:00' and hora_atual < '18:00':
-            eh_dia = True
-        else:
-            eh_dia = False
+        def obter_icone_svg(code, is_day): #Obtém ícone SVG
+            mapa = {
+                1000: ['clear-day' if is_day else 'clear-night', 'Céu limpo'],
+                1003: ['partly-cloudy-day' if is_day else 'partly-cloudy-night', 'Parcialmente nublado'],
+                1006: ['cloudy', 'Nublado'],
+                1009: ['overcast-day' if is_day else 'overcast-night', 'Encoberto'],
+                1030: ['mist', 'Névoa'],
+                1063: ['drizzle', 'Possibilidade de Garoa'],
+                1066: ['snow', 'Neve'],
+                1069: ['sleet', 'Possibilidade de Chuva com granizo'],
+                1072: ['drizzle', 'Possibilidade de Garoa congelante'],
+                1087: ['thunderstorms-day' if is_day else 'thunderstorms-night', 'Possibilidade de trovoadas'],
+                1114: ['snow', 'Neve soprada'],
+                1117: ['snow', 'Nevasca'],
+                1135: ['fog-day' if is_day else 'fog-night', 'Nevoeiro'],
+                1147: ['fog-day' if is_day else 'fog-night', 'Nevoeiro congelante'],
+                1150: ['drizzle', 'Garoa fraca'],
+                1153: ['drizzle', 'Garoa'],
+                1168: ['drizzle', 'Garoa congelante'],
+                1171: ['extreme-rain', 'Garoa congelante forte'],
+                1180: ['rain', 'Chuva fraca e intermitente'],
+                1183: ['rain', 'Chuva fraca'],
+                1186: ['rain', 'Chuva'],
+                1189: ['rain', 'Chuva'],
+                1192: ['extreme-rain', 'Chuva forte intermitente'],
+                1195: ['extreme-rain', 'Chuva forte'],
+                1198: ['rain', 'Chuva congelante fraca'],
+                1201: ['extreme-rain', 'Chuva congelante forte'],
+                1204: ['sleet', 'Granizo leve'],
+                1207: ['sleet', 'Granizo moderado ou forte'],
+                1210: ['snow', 'Neve leve'],
+                1213: ['snow', 'Neve'],
+                1216: ['snow', 'Neve moderada'],
+                1219: ['snow', 'Neve'],
+                1222: ['snow', 'Neve pesada e esparsa'],
+                1225: ['snow', 'Neve pesada'],
+                1237: ['hail', 'Granizo'],
+                1240: ['rain', 'Pancada de chuva leve'],
+                1243: ['rain', 'Pancada de chuva moderada ou forte'],
+                1246: ['extreme-rain', 'Pancada de chuva torrencial'],
+                1249: ['sleet', 'Pancada de granizo leve'],
+                1252: ['sleet', 'Pancada de granizo moderada ou forte'],
+                1255: ['snow', 'Pancada de neve leve'],
+                1258: ['snow', 'Pancada de neve moderada ou forte'],
+                1261: ['hail', 'Pancada leve de granizo'],
+                1264: ['hail', 'Pancada forte de granizo'],
+                1273: ['thunderstorms-day-rain' if is_day else 'thunderstorms-night-rain', 'Chuva fraca com trovoadas'],
+                1276: ['thunderstorms-day-extreme-rain' if is_day else 'thunderstorms-night-extreme-rain', 'Chuva forte com trovoadas'],
+                1279: ['thunderstorms-day-snow' if is_day else 'thunderstorms-night-snow', 'Neve fraca com trovoadas'],
+                1282: ['thunderstorms-day-extreme-snow' if is_day else 'thunderstorms-night-extreme-snow', 'Neve forte com trovoadas'],
+            }
+            return mapa.get(code, ['not-available', 'Condição não disponível'])
 
-        if agora['condition']['code'] == 1000 and eh_dia:
-            icone_tempo = 'clear-day'
-            texto_tempo = 'Céu limpo'
-        
-        elif agora['condition']['code'] == 1000 and not eh_dia:
-            icone_tempo = 'clear-night'
-            texto_tempo = 'Céu limpo'
-
-        elif agora['condition']['code'] in [1003, 1006] and eh_dia:
-            icone_tempo = 'overcast-day'
-            texto_tempo = 'Parcialmente nublado'
-        
-        elif agora['condition']['code'] in [1003, 1006] and not eh_dia:
-            icone_tempo = 'overcast-night'
-            texto_tempo = 'Parcialmente nublado'
-        
-        elif agora['condition']['code'] == 1009:
-            icone_tempo = 'clouy'
-            texto_tempo = 'Nublado'
-        
-        elif agora['condition']['code'] in [1063, 1069, 1072] and eh_dia:
-            icone_tempo = 'overcast-day-drizzle'
-            texto_tempo = 'Chuva'
-        
-        elif agora['condition']['code'] in [1063, 1069, 1072] and not eh_dia:
-            icone_tempo = 'overcast-night-drizzle'
-            texto_tempo = 'Chuva'
-        
-        #TODO: Colocar mais imagens
-
-        else:
-            icone_tempo = 'outra coisa'
-            texto_tempo = 'Tempo não configurado'
+        lista_tempo = obter_icone_svg(agora['condition']['code'], agora['is_day'])
         
 
         context = {
             "lugar": local,
             "ultima_atualizacao": ultima_atualizacao,
-            "icone_tempo": icone_tempo,
-            "texto_tempo": texto_tempo,
+            "icone_tempo": lista_tempo[0],
+            "texto_tempo": lista_tempo[1],
             "ag": agora,
-            "prox_dias": proximos_dias,
+            "previsao_hoje": previsao[0],
+            "previsao": previsao,
             "umidade": tipo_umidade,
             "angulo_vento": angulo_vento,
         }
