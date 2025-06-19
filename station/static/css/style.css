@@ -22,19 +22,28 @@ body{
   font-weight: 600;
 }
 
-.table-font-size
+.inter-bold
+{
+  font-family: Inter;
+  font-weight: 700;
+}
+
+.table-top-font-size
 {
   font-size: 1.875rem;
 }
 
-.table-division
+.table-bottom-font-size
 {
-  border-bottom: 2px solid #FFF; 
-  width: 50%;;
+  font-size: 1.30rem;
 }
 
 tr{
   line-height: 250%;
+}
+
+td{
+  border-bottom: none;
 }
 
 .border-radius
@@ -42,6 +51,10 @@ tr{
   border-radius: 20px;
 }
 
+.drop-space
+{
+  margin-right: 0.5rem;
+}
 
 .form-check-input {
   clear: left;

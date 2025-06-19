@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from datetime import datetime
 import requests
 from decouple import config
 
@@ -8,7 +9,7 @@ class IndexView(View):
         
         #########################  REQUISIÇÃO DA API DO WEATHERAPI ####################
         API_KEY = config('API_KEY')
-        local =  request.GET.get('local', 'Sao Paulo')
+        local =  request.GET.get('local', 'São Paulo')
         dias = 6
         URL = f'http://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={local}&days={dias}&aqi=no&alerts=yes'
         response = requests.get(URL)
@@ -35,7 +36,7 @@ class IndexView(View):
         
         angulo_vento = agora['wind_degree'] - 45 # Faz correção (a imagem do ícone já é inclinada 45º)
 
-        def obter_icone_svg(code, is_day): #Obtém ícone SVG
+        def obter_icone_svg(code, is_day): #Obtém ícone SVG com base no código do tempo atual
             mapa = {
                 1000: ['clear-day' if is_day else 'clear-night', 'Céu limpo'],
                 1003: ['partly-cloudy-day' if is_day else 'partly-cloudy-night', 'Parcialmente nublado'],
@@ -90,6 +91,24 @@ class IndexView(View):
 
         lista_tempo = obter_icone_svg(agora['condition']['code'], agora['is_day'])
         
+        dias_semana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
+        dia_index = datetime.now().weekday()
+        dias_semana = dias_semana[dia_index + 1:] + dias_semana[:dia_index] #Obtém nomes dos 6 próximos dias da semana
+
+        chances_chuva = [] # Obtém chances de chuva, ícones do tempo e máximas e mínimas de temperatura
+        icones = [] # dos próximos 6 dias
+        max_temps = []
+        min_temps = []
+
+        for i in range(0, 6): #Popula as listas com as informações do tempo dos próximos dias
+            chances_chuva.append(previsao[i]['day']["daily_chance_of_rain"])
+
+            codigo_tempo = previsao[i]['day']["condition"]['code']
+            icone_tempo = obter_icone_svg(codigo_tempo, True)
+            icones.append(icone_tempo[0])
+
+            max_temps.append(previsao[i]['day']["maxtemp_c"])
+            min_temps.append(previsao[i]['day']["mintemp_c"])
 
         context = {
             "lugar": local,
@@ -98,9 +117,9 @@ class IndexView(View):
             "texto_tempo": lista_tempo[1],
             "ag": agora,
             "previsao_hoje": previsao[0],
-            "previsao": previsao,
             "umidade": tipo_umidade,
             "angulo_vento": angulo_vento,
+            "previsao": zip(dias_semana, chances_chuva, icones, max_temps, min_temps)
         }
 
         return render(request, 'index.html', context)
