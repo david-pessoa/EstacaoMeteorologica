@@ -10,14 +10,15 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark mt-2 py-3">
         <div class="container-fluid position-relative">
             <!-- Menu à esquerda -->
             <div class="d-flex align-items-center">
-                <img src="{% static 'img/bars-solid.svg' %}" alt="menu" height="40px" width="40px" class="me-2">
-                <h4 class="mb-0 text-white">Menu</h4>
+                <i class="fa fa-bars fa-3x me-3"></i>
+                <h3 class="mb-0 text-white">Menu</h3>
             </div>
 
             <!-- Título centralizado -->
@@ -26,21 +27,42 @@
             </h1>
         </div>
     </nav>
-    <div>
-        <div>
-            <div>
-                <img src="" alt=""> <!--Localização-->
-                <span></span> <!--Linha verde-->
+    <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center mt-5">
+            <div class="d-flex align-items-center ms-5">
+                <i class="fa fa-location-dot fa-3x"></i>
+                <div class="ms-2" style="width: 7px; height: 50px; background-color: #30C708; border-radius: 7px;"></div>
             </div>
-            <div>
-                <h4>{{ lugar }}</h4>
+            <div class="ms-3">
+                <h3 class="mb-0">{{ lugar }}</h3>
                 <span>Última atualização: Hoje {{ ag.hora_coleta }}</span>
             </div>
         </div>
-        <div class="form-check form-switch">
-            <span>Claro</span>
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-            <span>Escuro</span>
+        <div class="d-flex align-items-center ms-auto me-5">
+            <span class="escuro-claro me-2">Escuro</span>
+            <div class="form-check form-switch form-switch-md mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            </div>
+            <span class="escuro-claro ms-2">Claro</span>
+        </div>
+    </div>
+    <div>
+        <div>
+            <div>
+                <div>
+                    <h1>{{ ag.temperatura|floatformat:0 }}ºC</h1>
+                </div>
+                <div>   
+                    <img src="{% static '' %}img/{{ icone_tempo }}.svg" alt="{{ texto_tempo }}" height="150px" width="150px">
+                    <h1>{{ texto_tempo }}</h1>
+                </div>
+            </div>
+            <div>
+                <span>Sensação Térmica: {{ ag.sensacao_termica|floatformat:0 }}ºC</span>
+            </div>
+        </div>
+        <div>
+            
         </div>
     </div>
 </body>

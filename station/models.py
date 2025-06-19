@@ -8,7 +8,7 @@ class Agora(models.Model):
     velocidade_vento = models.DecimalField('Velocidade do Vento', max_digits=4, decimal_places=1)
     umidade = models.DecimalField('Umidade do Ar', max_digits=3, decimal_places=0)
     pressao = models.DecimalField('Pressão Atmosférica', max_digits=5, decimal_places=1)
-    cobertura_nuvem = models.DecimalField('Cobertura de Nuvem', max_digits=3, decimal_places=0)
+    codigo_tempo = models.DecimalField('Código do tempo', max_digits=4, decimal_places=0)
 
     def __str__(self):
         return f"Agora: {self.hora_coleta}"
@@ -45,7 +45,7 @@ class Horario(models.Model):
 class ProximosDias(models.Model):
     data = models.DateField('Dia')
     chance_chuva = models.DecimalField('Chance de chuva', max_digits=3, decimal_places=1)
-    cobertura_nuvem = models.DecimalField('Cobertura de Nuvem', max_digits=3, decimal_places=0)
+    codigo_tempo = models.DecimalField('Código do tempo', max_digits=4, decimal_places=0)
     temp_max = models.DecimalField('Temperatura Máxima', max_digits=3, decimal_places=1)
     temp_min = models.DecimalField('Temperatura Mínima', max_digits=3, decimal_places=1)
 

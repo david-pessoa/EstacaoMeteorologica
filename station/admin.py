@@ -12,7 +12,7 @@ class AdminAgora(admin.ModelAdmin):
         'velocidade_vento', 
         'umidade',
         'pressao',
-        'cobertura_nuvem'
+        'codigo_tempo'
         )
 
 @admin.register(Hoje)
@@ -25,4 +25,4 @@ class AdminHorario(admin.ModelAdmin):
 
 @admin.register(ProximosDias)
 class AdminProximosDias(admin.ModelAdmin):
-    list_display = ('pk', 'data', 'chance_chuva', 'cobertura_nuvem', 'temp_max', 'temp_min')
+    list_display = ('pk', 'data', 'chance_chuva', 'codigo_tempo', 'temp_max', 'temp_min')
