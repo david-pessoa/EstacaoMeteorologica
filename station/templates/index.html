@@ -34,8 +34,8 @@
                 <div class="ms-2" style="width: 7px; height: 50px; background-color: #30C708; border-radius: 7px;"></div>
             </div>
             <div class="ms-3">
-                <h3 class="mb-0">{{ lugar }}</h3>
-                <span>Última atualização: Hoje {{ ag.hora_coleta }}</span>
+                <h3 class="mb-0 nunito">{{ lugar }}</h3>
+                <span>Última atualização: Hoje {{ ultima_atualizacao }}</span>
             </div>
         </div>
         <div class="d-flex align-items-center ms-auto me-5">
@@ -46,24 +46,41 @@
             <span class="escuro-claro ms-2">Claro</span>
         </div>
     </div>
-    <div>
+    <div class=" ms-5 d-flex align-items-center">
         <div>
-            <div>
+            <div class="d-flex align-items-center">
                 <div>
-                    <h1>{{ ag.temperatura|floatformat:0 }}ºC</h1>
+                    <h1 class="nunito" style="font-size: 5rem">{{ ag.temp_c|floatformat:0 }}ºC</h1>
+                    <h2 class="nunito" style="font-size: 1.5rem">Sensação Térmica: {{ ag.feelslike_c|floatformat:0 }}ºC</h2>
                 </div>
-                <div>   
-                    <img src="{% static '' %}img/{{ icone_tempo }}.svg" alt="{{ texto_tempo }}" height="150px" width="150px">
-                    <h1>{{ texto_tempo }}</h1>
+                <div class="d-flex align-items-center">   
+                    <img src="{% static '' %}img/{{ icone_tempo }}.svg" alt="{{ texto_tempo }}" style="height: 200px; width: 200px; clip-path: inset(20px 30px 20px 30px);">
+                    <h1 style="font-size: 3rem">{{ texto_tempo }}</h1>
                 </div>
-            </div>
-            <div>
-                <span>Sensação Térmica: {{ ag.sensacao_termica|floatformat:0 }}ºC</span>
             </div>
         </div>
-        <div>
+        <table class="bg-dark ms-auto me-5" style="width: 38.75rem; height: 18.875rem; border-radius: 20px;">
+            <tbody class="table-font-size">
+                <tr class="table-division">
+                    <td class="inter table-font-size">VENTO</td>
+                    <td>
+                        <i class="fa fa-location-arrow fa-2x" style="transform: rotate({{ angulo_vento }}deg); color: #006aff;"></i>
+                        <span class="nunito">{{ ag.wind_dir }}</span>
+                    </td>
+                    <td class="nunito table-font-size">{{ ag.wind_kph }}km/h</td>
+                </tr>
+                <tr class="table-division">
+                    <td class="inter table-font-size">UMIDADE</td>
+                    <td class="nunito">{{ umidade }}</td>
+                    <td class="nunito">{{ ag.humidity }}%</td>
+                </tr>
+                <tr>
+                    <td class="inter table-font-size">PRESSÃO</td>
+                    <td class="nunito">Caindo</td>
+                    <td class="nunito">{{ ag.pressure_mb|floatformat:0 }}hPa</td>
+                </tr>
+            </tbody>
             
-        </div>
     </div>
 </body>
 </html>
