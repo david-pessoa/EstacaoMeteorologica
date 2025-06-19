@@ -51,7 +51,7 @@ td{
   border-radius: 20px;
 }
 
-.drop-space
+.drop-space, .arrow-space
 {
   margin-right: 0.5rem;
 }
