@@ -1,28 +1,6 @@
 from django.contrib import admin
-from .models import Agora, Hoje, Horario, ProximosDias
+from .models import Cidade
 
-@admin.register(Agora)
-class AdminAgora(admin.ModelAdmin):
-    list_display = (
-        'pk', 
-        'hora_coleta',
-        'temperatura', 
-        'sensacao_termica', 
-        'direcao_vento', 
-        'velocidade_vento', 
-        'umidade',
-        'pressao',
-        'codigo_tempo'
-        )
-
-@admin.register(Hoje)
-class AdminHoje(admin.ModelAdmin):
-    list_display = ('pk', 'dia', 'temp_max', 'temp_min')
-
-@admin.register(Horario)
-class AdminHorario(admin.ModelAdmin):
-    list_display = ('pk', 'dia', 'horario', 'temperatura')
-
-@admin.register(ProximosDias)
-class AdminProximosDias(admin.ModelAdmin):
-    list_display = ('pk', 'data', 'chance_chuva', 'codigo_tempo', 'temp_max', 'temp_min')
+@admin.register(Cidade)
+class AdminCidade(admin.ModelAdmin):
+    list_display = ('pk', 'nome', 'nomeAPI', 'regiao', 'pais', 'timezone')

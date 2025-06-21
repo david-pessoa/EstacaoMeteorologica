@@ -36,8 +36,8 @@ new Chart(ctx, {
                 }
             },
             y: {
-                min: 0,
-                max: 50,
+                min: Math.round(previsao_hoje.day.maxtemp_c) + 3,
+                max: Math.round(previsao_hoje.day.mintemp_c) - 3,
                 title: {
                     display: true,
                     text: 'Temperatura (°C)'

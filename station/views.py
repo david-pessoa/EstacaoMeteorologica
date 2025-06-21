@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 from django.views import View
 from datetime import datetime
@@ -10,11 +11,14 @@ class IndexView(View):
         #########################  REQUISIÇÃO DA API DO WEATHERAPI ####################
         API_KEY = config('API_KEY')
         local =  request.GET.get('local', 'São Paulo')
-        dias = 6
-        URL = f'http://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={local}&days={dias}&aqi=no&alerts=yes'
+        dias = 7
+        URL = f'http://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={local}&days={dias}&aqi=no&alerts=yes&lang=pt'
         response = requests.get(URL)
-        dados = response.json()
 
+        if response.status_code == 400:
+            raise Http404()
+
+        dados = response.json()
         agora = dados['current'] #Tempo agora
         previsao = dados['forecast']['forecastday'] #Previsão do tempo para hoje e próximos dias
 
@@ -100,7 +104,7 @@ class IndexView(View):
         max_temps = []
         min_temps = []
 
-        for i in range(0, 6): #Popula as listas com as informações do tempo dos próximos dias
+        for i in range(1, 7): #Popula as listas com as informações do tempo dos próximos dias
             chances_chuva.append(previsao[i]['day']["daily_chance_of_rain"])
 
             codigo_tempo = previsao[i]['day']["condition"]['code']

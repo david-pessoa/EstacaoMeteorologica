@@ -1,0 +1,43 @@
+{% load static %}
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estação Meteorológica</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="shortcut icon" href="{% static 'img/clear-day.svg' %}" type="image/x-icon" height="70px" width="70px">
+    <link rel="stylesheet" href="{% static 'css/error.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark mt-2 py-3">
+        <div class="container-fluid position-relative">
+            <!-- Menu à esquerda -->
+            <div class="d-flex align-items-center">
+                <i class="fa fa-bars fa-3x me-3"></i>
+                <h3 class="mb-0 text-white">Menu</h3>
+            </div>
+
+            <!-- Título centralizado -->
+            <h1 class="position-absolute top-50 start-50 translate-middle text-white mb-0">
+                Dashboard Meteorológico
+            </h1>
+        </div>
+    </nav>
+    
+    {% block content %}
+        <!--Conteúdo da página-->
+    {% endblock %}
+        
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const previsao_hoje = {{ previsao_hoje|safe }}
+    </script>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
