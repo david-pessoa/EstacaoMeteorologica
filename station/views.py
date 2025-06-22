@@ -1,9 +1,10 @@
-from django.http import Http404
+import pytz
 from django.shortcuts import render
 from django.views import View
 from datetime import datetime
 import requests
 from decouple import config
+from .models import Cidade
 
 class IndexView(View):
     def get(self, request):
@@ -16,13 +17,24 @@ class IndexView(View):
         response = requests.get(URL)
 
         if response.status_code == 400:
-            raise Http404()
+            context = {"local": local}
+            return render(request, 'local_inexistente.html', context)
 
         dados = response.json()
         agora = dados['current'] #Tempo agora
+        
         previsao = dados['forecast']['forecastday'] #Previsão do tempo para hoje e próximos dias
 
-        ultima_atualizacao = agora['last_updated'].split(' ')[-1] #Obtém horário da última atualização
+        ultima_atualizacao_sem_tz = agora['last_updated'] #Obtém horário da última atualização
+        ultima_atualizacao_sem_tz = datetime.strptime(ultima_atualizacao_sem_tz, "%Y-%m-%d %H:%M") #Transforma string em data
+        
+        timezone = dados["location"]["tz_id"] #Obtém fuso-horário da estação
+        fuso_estacao = pytz.timezone(timezone)
+        ultima_atualizacao_com_tz = fuso_estacao.localize(ultima_atualizacao_sem_tz) #Adiciona fuso-horário ao horário
+
+        fuso_universal = pytz.timezone("UTC") #Converte para UTC
+        ultima_atualizacao_UTC = ultima_atualizacao_com_tz.astimezone(fuso_universal)
+
         umidade = agora['humidity'] #Obtém humidade atual
 
         # Classifica umidade como Alta, Moderad, Baixa ou Muito Baixa
@@ -116,16 +128,16 @@ class IndexView(View):
 
         context = {
             "lugar": local,
-            "ultima_atualizacao": ultima_atualizacao,
+            "ultima_atualizacao": ultima_atualizacao_UTC,
             "icone_tempo": lista_tempo[0],
             "texto_tempo": lista_tempo[1],
             "ag": agora,
             "previsao_hoje": previsao[0],
             "umidade": tipo_umidade,
             "angulo_vento": angulo_vento,
-            "previsao": zip(dias_semana, chances_chuva, icones, max_temps, min_temps)
+            "previsao": zip(dias_semana, chances_chuva, icones, max_temps, min_temps),
+            "cidades": Cidade.objects.all(),
         }
-
         return render(request, 'index.html', context)
     
     def post(self, request):

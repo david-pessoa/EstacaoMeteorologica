@@ -29,15 +29,28 @@
             </h1>
         </div>
     </nav>
+    <div class="align-items-center justify-content-center mt-3" style="width: vh-100;">
+        <div class="d-flex" style="width: 60%;">
+            <label class="form-label" for="cidade">Pesquise uma cidade: </label>
+            <input class="form-control" data-datalist="lista-cidades" type="text" id="AutocompleteDataList" name="cidade" placeholder="">
+            <datalist id="lista-cidades">
+                {% for cidade in cidades %}
+                    <option value="{{ cidade.nome }}">{{ cidade.nome }}</li>
+                {% endfor %}
+            </datalist>
+        </div>
+    </div>
     
     {% block content %}
         <!--Conteúdo da página-->
     {% endblock %}
         
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="{% static 'js/autocomplete.js' %}"></script>
     <script>
         const previsao_hoje = {{ previsao_hoje|safe }}
+        const ultima_atualizacao = "{{ ultima_atualizacao|date:'c' }}"
     </script>
-    <script src="{% static 'js/script.js' %}"></script>
+    <script type="module" src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

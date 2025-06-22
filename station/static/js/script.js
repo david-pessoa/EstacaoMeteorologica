@@ -1,16 +1,40 @@
+import Autocomplete from './autocomplete.js';
+
+const LastUpdate = document.getElementById('last_update') //tag onde fica o texto que informa a ultima atualização
 const ctx = document.getElementById('graficoTemperatura');
 
-const horarios = Array.from({length: 24}, (_, i) => {
-    return `${i.toString().padStart(2, '0')}:00`; // Horários das 0:00 até às 23:00
-});
+  const opts = {
+    onSelectItem: console.log,
+  };
+
+new Autocomplete(document.getElementById("AutocompleteDataList"), opts);
+
+const data = new Date(ultima_atualizacao); //Obtém data e converte para o fuso horário do Usuário
+
+const horas = data.getHours().toString().padStart(2, '0');
+const minutos = data.getMinutes().toString().padStart(2, '0');
+
+const hoje = new Date();
+const ehHoje = data.getDate() === hoje.getDate() &&
+                data.getMonth() === hoje.getMonth() &&
+                data.getFullYear() === hoje.getFullYear();
+
+const texto = ehHoje ? `Última atualização: Hoje às ${horas}:${minutos}` : 
+    `${data.getDate()} de ${data.toLocaleString('pt-BR', { month: 'long' })} às ${horas}:${minutos}`;
+
+LastUpdate.textContent = texto
 
 let temperaturas = [];
-
+let temp;
 for (let i = 0; i < 24; i++)
 {
     temp = Math.round(previsao_hoje.hour[i].temp_c);
     temperaturas.push(temp);
 }
+
+const horarios = Array.from({length: 24}, (_, i) => {
+    return `${i.toString().padStart(2, '0')}:00`; // Horários das 0:00 até às 23:00
+});
 
 new Chart(ctx, {
     type: 'line',
