@@ -125,6 +125,8 @@ class IndexView(View):
 
             max_temps.append(previsao[i]['day']["maxtemp_c"])
             min_temps.append(previsao[i]['day']["mintemp_c"])
+        
+        cidades = Cidade.objects.all()
 
         context = {
             "lugar": local,
@@ -136,7 +138,7 @@ class IndexView(View):
             "umidade": tipo_umidade,
             "angulo_vento": angulo_vento,
             "previsao": zip(dias_semana, chances_chuva, icones, max_temps, min_temps),
-            "cidades": Cidade.objects.all(),
+            "cidades": cidades,
         }
         return render(request, 'index.html', context)
     

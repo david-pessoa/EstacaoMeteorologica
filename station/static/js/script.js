@@ -2,12 +2,25 @@ import Autocomplete from './autocomplete.js';
 
 const LastUpdate = document.getElementById('last_update') //tag onde fica o texto que informa a ultima atualização
 const ctx = document.getElementById('graficoTemperatura');
+const AutocompleteDataList = document.getElementById("AutocompleteDataList");
 
   const opts = {
     onSelectItem: console.log,
   };
 
-new Autocomplete(document.getElementById("AutocompleteDataList"), opts);
+new Autocomplete(AutocompleteDataList, opts);
+
+AutocompleteDataList.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // impede que o autocomplete ou o formulário façam outra ação
+
+        const cidade = AutocompleteDataList.value.trim();
+
+        if (cidade) {
+            window.location.href = `/?local=${encodeURIComponent(cidade)}`;
+        }
+    }
+});
 
 const data = new Date(ultima_atualizacao); //Obtém data e converte para o fuso horário do Usuário
 
