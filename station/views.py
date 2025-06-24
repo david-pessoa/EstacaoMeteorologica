@@ -11,13 +11,19 @@ class IndexView(View):
         
         #########################  REQUISIÇÃO DA API DO WEATHERAPI ####################
         API_KEY = config('API_KEY')
-        local =  request.GET.get('local', 'São Paulo')
+        local_URL =  request.GET.get('local', 'São Paulo')
+
+        if Cidade.objects.filter(nomeAPI=local_URL).exists():
+            nome_local = Cidade.objects.get(nomeAPI=local_URL)
+        else:
+            nome_local = local_URL
+
         dias = 7
-        URL = f'http://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={local}&days={dias}&aqi=no&alerts=yes&lang=pt'
+        URL = f'http://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={local_URL}&days={dias}&aqi=no&alerts=yes&lang=pt'
         response = requests.get(URL)
 
         if response.status_code == 400:
-            context = {"local": local}
+            context = {"local": nome_local}
             return render(request, 'local_inexistente.html', context)
 
         dados = response.json()
@@ -129,7 +135,7 @@ class IndexView(View):
         cidades = Cidade.objects.all()
 
         context = {
-            "lugar": local,
+            "lugar": nome_local,
             "ultima_atualizacao": ultima_atualizacao_UTC,
             "icone_tempo": lista_tempo[0],
             "texto_tempo": lista_tempo[1],

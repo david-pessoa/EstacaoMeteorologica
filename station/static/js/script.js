@@ -3,6 +3,7 @@ import Autocomplete from './autocomplete.js';
 const LastUpdate = document.getElementById('last_update') //tag onde fica o texto que informa a ultima atualização
 const ctx = document.getElementById('graficoTemperatura');
 const AutocompleteDataList = document.getElementById("AutocompleteDataList");
+const SwitchThemeButton = document.getElementById('flexSwitchCheckDefault');
 
   const opts = {
     onSelectItem: console.log,
@@ -19,6 +20,61 @@ AutocompleteDataList.addEventListener('keydown', (event) => {
         if (cidade) {
             window.location.href = `/?local=${encodeURIComponent(cidade)}`;
         }
+    }
+});
+
+document.addEventListener('click', function(event) {
+    const link = event.target.closest('.dropdown-item');
+    if (link) {
+        event.preventDefault();  // Impede que o autocomplete só preencha
+
+        const cidade = link.getAttribute('data-value');
+        if (cidade) {
+            window.location.href = `/?local=${encodeURIComponent(cidade)}`;
+        }
+    }
+});
+
+SwitchThemeButton.addEventListener('click', function(event) {
+    const body = document.getElementsByTagName('body')[0]
+    const boxes = Array.from(document.getElementsByClassName('bg-dark'));
+    const tables = Array.from(document.getElementsByClassName('table-dark'));
+    const titles = Array.from(document.getElementsByTagName('h4', 'h5'));
+    const subtitles = Array.from(document.getElementsByTagName('h5'));
+
+    if (SwitchThemeButton.checked)
+    {
+        body.style.backgroundColor = '#b2f7d8';
+        body.style.color = '#000';
+        
+        titles.forEach(el => {
+            el.style.color = '#FFF';
+        });
+
+        subtitles.forEach(el => {
+            el.style.color = '#FFF';
+        });
+
+        boxes.forEach(el => {
+            el.style.setProperty('background-color', 'rgba(26, 161, 121, 1)', 'important');
+        });
+
+        tables.forEach(el => {
+            el.style.setProperty('--bs-table-bg', '#1AA179');
+        });
+    }
+    else
+    {
+        body.style.backgroundColor = '';
+        body.style.color = ''
+
+        boxes.forEach(el => {
+            el.style.setProperty('background-color', 'rgba(33, 37, 41, 1)', 'important');
+        });
+
+        tables.forEach(el => {
+            el.style.setProperty('--bs-table-bg', '#212529');
+        });
     }
 });
 
