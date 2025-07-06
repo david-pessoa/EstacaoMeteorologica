@@ -51,9 +51,27 @@ td{
   border-radius: 20px;
 }
 
+.fa-location-arrow{
+  color: #006aff;
+}
+
+.fa-droplet{
+  color: #1160e8;
+}
+
 .drop-space, .arrow-space
 {
   margin-right: 0.5rem;
+}
+
+.form-check-input:checked
+{
+  background-color: #13d00f;
+  border-color: transparent;
+}
+
+.form-check-input:focus {
+    border-color: transparent;
 }
 
 .form-check-input {

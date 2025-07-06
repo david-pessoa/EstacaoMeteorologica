@@ -41,7 +41,7 @@
                     <tr class="text-center" style="vertical-align: middle;">
                         <td class="text-start inter-bold table-font-size">VENTO</td>
                         <td>
-                            <i class="fa fa-location-arrow fa-2x arrow-space" style="transform: rotate({{ angulo_vento }}deg); color: #006aff;"></i>
+                            <i id="arrow" class="fa fa-location-arrow fa-2x arrow-space" style="transform: rotate({{ angulo_vento }}deg);"></i>
                             <span class="nunito">{{ ag.wind_dir }}</span>
                         </td>
                         <td class="nunito table-font-size">{{ ag.wind_kph }}km/h</td>
@@ -60,13 +60,13 @@
             </table>
         </div>
     </div>
-    <div class="d-flex align-items-top my-5">
+    <div class="d-flex justify-content-center my-5">
         <div class="bg-dark border-radius ps-4 pt-3 ms-5" style="width: 40vw;">
             <h4 class="inter">TEMPERATURA HOJE</h4>
             <div style="width: 95%; height: 70%;">
-                <canvas id="graficoTemperatura" style="width: 100%; height: 100%;"></canvas>
+                <canvas id="graficoTemperatura" style="width: 100%;"></canvas>
             </div>
-            <div class="pe-5 pt-4">
+            <div class="pe-5 pb-5">
                 <h5 class="text-end inter">Máxima: {{ previsao_hoje.day.maxtemp_c|floatformat:0 }}ºC</h5>
                 <h5 class="text-end inter">Mínima: {{ previsao_hoje.day.mintemp_c|floatformat:0 }}ºC</h5>
             </div>
@@ -79,7 +79,7 @@
                     <tr>
                         <td class="inter">{{ dia }}</td>
                         <td>
-                            <i class="fa fa-droplet drop-space" style="color: #1160e8;"></i>
+                            <i class="fa fa-droplet drop-space"></i>
                             <span class="nunito">{{ chance_chuva }}%</span>
                         </td>
                         <td>

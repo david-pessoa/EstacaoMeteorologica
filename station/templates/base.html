@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="{% static 'img/clear-day.svg' %}" type="image/x-icon" height="70px" width="70px">
     <link rel="stylesheet" href="{% static 'css/error.css' %}">
 </head>
-<body>
+<body id="body">
     <nav class="navbar navbar-dark bg-dark mt-2 py-3">
         <div class="container-fluid position-relative">
             <!-- Menu à esquerda -->
@@ -33,7 +33,7 @@
         <div class="" style="width: 40%;">
             <label class="form-label" for="cidade">Pesquise uma cidade: </label>
             <input class="form-control" data-datalist="lista-cidades" type="text" id="AutocompleteDataList" name="cidade" autocomplete="off">
-            <datalist id="lista-cidades">
+            <datalist id="lista-cidades" class="dropdown-menu-dark">
                 {% for cidade in cidades %}
                     <option value="{{ cidade.nomeAPI }}">{{ cidade.nome }}</option>
                 {% endfor %}

@@ -54,12 +54,17 @@ API_KEY="chave da API"
 DEBUG=True
 ```
 
-## 6) Crie um novo super usuário
+## 6) Transfira o arquivo db.sqlite3 da sua máquina local para a instância EC2 
+```
+scp -i /caminho/para/arquivo.pem /caminho/para/db.sqlite3 <IP>:/home/ubuntu/EstacaoMeteorologica
+```
+
+## 7) Crie um novo super usuário
 ```
 python manage.py createsuperuser
 ```
 
-## 7) Agora rode o migrate e o servidor
+## 8) Agora rode o migrate e o servidor
 ```
 python manage.py migrate
 python manage.py runserver

@@ -18,7 +18,7 @@ class IndexView(View):
         else:
             nome_local = local_URL
 
-        dias = 7
+        dias = 3
         URL = f'http://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={local_URL}&days={dias}&aqi=no&alerts=yes&lang=pt'
         response = requests.get(URL)
 
@@ -122,7 +122,7 @@ class IndexView(View):
         max_temps = []
         min_temps = []
 
-        for i in range(1, 7): #Popula as listas com as informações do tempo dos próximos dias
+        for i in range(1, dias): #Popula as listas com as informações do tempo dos próximos dias
             chances_chuva.append(previsao[i]['day']["daily_chance_of_rain"])
 
             codigo_tempo = previsao[i]['day']["condition"]['code']
