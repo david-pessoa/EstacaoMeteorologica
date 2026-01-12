@@ -1,8 +1,11 @@
-{% extends 'base.html' %} {% load static %} {% load django_bootstrap5 %} {%
-block content %}
-<div class="text-center mt-5" style="width: 100%">
-  <h1 class="title">Erro 404</h1>
-  <h4 class="subtitle">Página não encontrada</h4>
-</div>
-<script type="module" src="{% static 'js/error.js' %}"></script>
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <div class="text-center mt-5" style="width: 100%;">
+        <h1 class="title">Erro 404</h1>
+        <h4 class="subtitle">Página não encontrada</h4>
+    </div>
+    <script type="module" src="{% static 'js/error.js' %}"></script>
 {% endblock %}

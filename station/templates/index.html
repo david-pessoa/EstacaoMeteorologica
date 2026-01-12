@@ -1,105 +1,83 @@
-{% extends 'base.html' %} {% load static %} {% load django_bootstrap5 %} {%
-block content %}
-<div class="d-flex align-items-center ms-5">
-  <div class="me-5">
-    <div class="d-flex align-items-center">
-      <div>
-        <h1 class="nunito" style="font-size: 6rem">
-          {{ ag.temp_c|floatformat:0 }}ºC
-        </h1>
-        <h2 class="nunito" style="font-size: 1.5rem">
-          Sensação Térmica: {{ ag.feelslike_c|floatformat:0 }}ºC
-        </h2>
-      </div>
-      <div class="d-flex align-items-center">
-        <img
-          src="{% static '' %}img/{{ icone_tempo }}.svg"
-          alt="{{ texto_tempo }}"
-          style="height: 30vh; width: 30vh"
-        />
-        <h1 class="inter-bold" style="font-size: 2rem">{{ texto_tempo }}</h1>
-      </div>
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <div class="d-flex align-items-center ms-5">
+        <div class="me-5">
+            <div class="d-flex align-items-center">
+                <div>
+                    <h1 class="nunito" style="font-size: 6rem">{{ ag.temp_c|floatformat:0 }}ºC</h1>
+                    <h2 class="nunito" style="font-size: 1.5rem">Sensação Térmica: {{ ag.feelslike_c|floatformat:0 }}ºC</h2>
+                </div>
+                <div class="d-flex align-items-center">   
+                    <img src="{% static '' %}img/{{ icone_tempo }}.svg" alt="{{ texto_tempo }}" style="height: 30vh; width: 30vh;">
+                    <h1 class="inter-bold" style="font-size: 2rem">{{ texto_tempo }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center bg-dark border-radius ms-auto me-5">
+            <table class="table table-dark mx-4" style="width: 35vw;">
+                <tbody class="table-top-font-size">
+                    <tr class="text-center" style="vertical-align: middle;">
+                        <td class="text-start inter-bold table-font-size">VENTO</td>
+                        <td>
+                            <i id="arrow" class="fa fa-location-arrow fa-2x arrow-space" style="transform: rotate({{ angulo_vento }}deg);"></i>
+                            <span class="nunito">{{ ag.wind_dir }}</span>
+                        </td>
+                        <td class="nunito table-font-size">{{ ag.wind_kph }}km/h</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td class="text-start inter-bold table-font-size">UMIDADE</td>
+                        <td class="nunito">{{ umidade }}</td>
+                        <td class="nunito">{{ ag.humidity }}%</td>
+                    </tr>
+                    <tr class="text-center mt-3">
+                        <td class="text-start inter-bold table-font-size">PRESSÃO</td>
+                        <td class="nunito">Caindo</td>
+                        <td class="nunito">{{ ag.pressure_mb|floatformat:0 }}hPa</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
-  <div
-    class="d-flex align-items-center justify-content-center bg-dark border-radius ms-auto me-5"
-  >
-    <table class="table table-dark mx-4" style="width: 35vw">
-      <tbody class="table-top-font-size">
-        <tr class="text-center" style="vertical-align: middle">
-          <td class="text-start inter-bold table-font-size">VENTO</td>
-          <td>
-            <i
-              id="arrow"
-              class="fa fa-location-arrow fa-2x arrow-space"
-              style="transform: rotate({{ angulo_vento }}deg);"
-            ></i>
-            <span class="nunito">{{ ag.wind_dir }}</span>
-          </td>
-          <td class="nunito table-font-size">{{ ag.wind_kph }}km/h</td>
-        </tr>
-        <tr class="text-center">
-          <td class="text-start inter-bold table-font-size">UMIDADE</td>
-          <td class="nunito">{{ umidade }}</td>
-          <td class="nunito">{{ ag.humidity }}%</td>
-        </tr>
-        <tr class="text-center mt-3">
-          <td class="text-start inter-bold table-font-size">PRESSÃO</td>
-          <td class="nunito">Caindo</td>
-          <td class="nunito">{{ ag.pressure_mb|floatformat:0 }}hPa</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div class="d-flex justify-content-center my-5">
-  <div class="bg-dark border-radius ps-4 pt-3 ms-5" style="width: 40vw">
-    <h4 class="inter">TEMPERATURA HOJE</h4>
-    <div style="width: 95%; height: 70%">
-      <canvas id="graficoTemperatura" style="width: 100%"></canvas>
+    <div class="d-flex justify-content-center my-5">
+        <div class="bg-dark border-radius ps-4 pt-3 ms-5" style="width: 40vw;">
+            <h4 class="inter">TEMPERATURA HOJE</h4>
+            <div style="width: 95%; height: 70%;">
+                <canvas id="graficoTemperatura" style="width: 100%;"></canvas>
+            </div>
+            <div class="pe-5 pb-5">
+                <h5 class="text-end inter">Máxima: {{ previsao_hoje.day.maxtemp_c|floatformat:0 }}ºC</h5>
+                <h5 class="text-end inter">Mínima: {{ previsao_hoje.day.mintemp_c|floatformat:0 }}ºC</h5>
+            </div>
+        </div>
+        <div class="align-items-center justify-content-center bg-dark border-radius ps-4 pt-3 ms-auto me-5" style="width: 50vw;">
+            <h4 class="inter">PRÓXIMOS DIAS</h4>
+            <table class="table table-dark">
+                <tbody class="table-bottom-font-size">
+                    {% for dia, chance_chuva, icone, max, min in previsao %}
+                    <tr>
+                        <td class="inter">{{ dia }}</td>
+                        <td>
+                            <i class="fa fa-droplet drop-space"></i>
+                            <span class="nunito">{{ chance_chuva }}%</span>
+                        </td>
+                        <td>
+                            <img src="{% static '' %}img/{{ icone }}.svg" alt="Ícone do tempo" style="height: 3.2rem; width: 3.2rem;">
+                        </td>
+                        <td class="nunito">{{ max|floatformat:0 }}ºC</td>
+                        <td class="nunito">{{ min|floatformat:0 }}ºC</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="pe-5 pb-5">
-      <h5 class="text-end inter">
-        Máxima: {{ previsao_hoje.day.maxtemp_c|floatformat:0 }}ºC
-      </h5>
-      <h5 class="text-end inter">
-        Mínima: {{ previsao_hoje.day.mintemp_c|floatformat:0 }}ºC
-      </h5>
-    </div>
-  </div>
-  <div
-    class="align-items-center justify-content-center bg-dark border-radius ps-4 pt-3 ms-auto me-5"
-    style="width: 50vw"
-  >
-    <h4 class="inter">PRÓXIMOS DIAS</h4>
-    <table class="table table-dark">
-      <tbody class="table-bottom-font-size">
-        {% for dia, chance_chuva, icone, max, min in previsao %}
-        <tr>
-          <td class="inter">{{ dia }}</td>
-          <td>
-            <i class="fa fa-droplet drop-space"></i>
-            <span class="nunito">{{ chance_chuva }}%</span>
-          </td>
-          <td>
-            <img
-              src="{% static '' %}img/{{ icone }}.svg"
-              alt="Ícone do tempo"
-              style="height: 3.2rem; width: 3.2rem"
-            />
-          </td>
-          <td class="nunito">{{ max|floatformat:0 }}ºC</td>
-          <td class="nunito">{{ min|floatformat:0 }}ºC</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  const previsao_hoje = {{ previsao_hoje|safe }}
-  const ultima_atualizacao = "{{ ultima_atualizacao|date:'c' }}"
-</script>
-<script type="module" src="{% static 'js/script.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const previsao_hoje = {{ previsao_hoje|safe }}
+        const ultima_atualizacao = "{{ ultima_atualizacao|date:'c' }}"
+    </script>
+    <script type="module" src="{% static 'js/script.js' %}"></script>
 {% endblock %}
