@@ -1,77 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 
-body{
-    background-color: #191A21;
-    color: #FFF;
+body {
+  background-color: #191a21;
+  color: #fff;
 }
 
-.escuro-claro
-{
-    font-size: 1.25rem;
+.escuro-claro {
+  font-size: 1.25rem;
 }
 
-.nunito
-{
+.nunito {
   font-family: Nunito;
   font-weight: 700;
 }
 
-.inter
-{
+.inter {
   font-family: Inter;
   font-weight: 600;
 }
 
-.inter-bold
-{
+.inter-bold {
   font-family: Inter;
   font-weight: 700;
 }
 
-.table-top-font-size
-{
+.table-top-font-size {
   font-size: 1.875rem;
 }
 
-.table-bottom-font-size
-{
+.table-bottom-font-size {
   font-size: 1.675rem;
 }
 
-tr{
+tr {
   line-height: 250%;
 }
 
-td{
+td {
   border-bottom: none;
 }
 
-.border-radius
-{
+.border-radius {
   border-radius: 20px;
 }
 
-.fa-location-arrow{
+.fa-location-arrow {
   color: #006aff;
 }
 
-.fa-droplet{
+.fa-droplet {
   color: #1160e8;
 }
 
-.drop-space, .arrow-space
-{
+.drop-space,
+.arrow-space {
   margin-right: 0.5rem;
 }
 
-.form-check-input:checked
-{
+.form-check-input:checked {
   background-color: #13d00f;
   border-color: transparent;
 }
 
 .form-check-input:focus {
-    border-color: transparent;
+  border-color: transparent;
 }
 
 .form-check-input {
