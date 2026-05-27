@@ -1,0 +1,17 @@
+volumes:
+  static_volume:
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+    expose:
+      - 8000
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf

@@ -7,12 +7,12 @@
         <div class="me-5">
             <div class="d-flex align-items-center">
                 <div>
-                    <h1 class="nunito" style="font-size: 6rem">{{ ag.temp_c|floatformat:0 }}ºC</h1>
-                    <h2 class="nunito" style="font-size: 1.5rem">Sensação Térmica: {{ ag.feelslike_c|floatformat:0 }}ºC</h2>
+                    <h1 class="nunito">{{ ag.temp_c|floatformat:0 }}ºC</h1>
+                    <h2 class="nunito">Sensação Térmica: {{ ag.feelslike_c|floatformat:0 }}ºC</h2>
                 </div>
                 <div class="d-flex align-items-center">   
                     <img src="{% static '' %}img/{{ icone_tempo }}.svg" alt="{{ texto_tempo }}" style="height: 30vh; width: 30vh;">
-                    <h1 class="inter-bold" style="font-size: 2rem">{{ texto_tempo }}</h1>
+                    <h5 class="inter-bold" style="font-size: 2rem">{{ texto_tempo }}</h5>
                 </div>
             </div>
         </div>
